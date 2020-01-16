@@ -3,13 +3,15 @@
            https://api.github.com/users/<your name>
 */
 
-// axios.get('https://api.github.com/users/johnkirtley')
-//   .then(response => {
-//     console.log(response);
-//   })
-//   .catch(error => {
-//     console.log('Couldn\'t fetch data', error);
-//   })
+
+axios.get('https://api.github.com/users/johnkirtley')
+  .then(response => {
+    // console.log(response);
+    return cards.append(newCard(response.data));
+  })
+  .catch(error => {
+    console.log('Couldn\'t fetch data', error);
+  })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -34,17 +36,25 @@ const cards = document.querySelector('.cards');
           user, and adding that card to the DOM.
 */
 
+const followersArray = [];
+
 axios.get('https://api.github.com/users/johnkirtley/followers')
-  .then(response => {
-    return response.data.forEach(avatar => {
-      cards.append(newCard(avatar));
+  .then((response) => {
+    console.log(response);
+
+    response.data.map((item) => {
+      axios.get(`https://api.github.com/users/${item.login}`)
+        .then((response) => {
+          return cards.append(newCard(response.data));
+        })
+        .catch(error => {
+          console.log('data not returned', error);
+        })
     })
   })
-  .catch(error => {
-    console.log('not working', error);
-  });
 
-const followersArray = [];
+// console.log(followersArray);
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -86,7 +96,9 @@ function newCard(data) {
   userImg.src = data.avatar_url;
   location.textContent = data.location;
   profile.textContent = 'Profile: '
-  profileLink.src = data.html_url;
+  name.textContent = data.name;
+  userName.textContent = data.login;
+  profileLink.textContent = data.html_url;
   followers.textContent = 'Followers: ' + data.followers;
   following.textContent = 'Following: ' + data.following;
   bio.textContent = data.bio;
@@ -96,8 +108,8 @@ function newCard(data) {
   cardInfo.append(name);
   cardInfo.append(userName);
   cardInfo.append(location);
-  cardInfo.append(profile);
   profile.append(profileLink);
+  cardInfo.append(profile);
   cardInfo.append(followers);
   cardInfo.append(following);
   cardInfo.append(bio);
@@ -114,3 +126,5 @@ function newCard(data) {
   luishrd
   bigknell
 */
+
+// console.log(new Date(1579213452 * 1000));
