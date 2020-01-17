@@ -3,14 +3,12 @@
            https://api.github.com/users/<your name>
 */
 
-
 axios.get('https://api.github.com/users/johnkirtley')
   .then(response => {
-    // console.log(response);
     return cards.append(newCard(response.data));
   })
   .catch(error => {
-    console.log('Couldn\'t fetch data', error);
+    console.log('Cannot get info', error);
   })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -39,16 +37,19 @@ const cards = document.querySelector('.cards');
 const followersArray = [];
 
 axios.get('https://api.github.com/users/johnkirtley/followers')
-  .then((response) => {
-    response.data.map((item) => {
+  .then(response => {
+    response.data.map(item => {
       axios.get(`https://api.github.com/users/${item.login}`)
-        .then((response) => {
+        .then(response => {
           return cards.append(newCard(response.data));
         })
-        .catch(error => {
-          console.log('data not returned', error);
+        .catch(errors => {
+          console.log('Cannot get followers data', error);
         })
     })
+  })
+  .catch(error => {
+    console.log('Cannot get followers', error);
   })
 
 
@@ -101,6 +102,7 @@ function newCard(data) {
   userName.textContent = data.login;
   profileLink.textContent = data.html_url;
   profileLink.href = data.html_url;
+  profileLink.target = '_blank';
   followers.textContent = 'Followers: ' + data.followers;
   following.textContent = 'Following: ' + data.following;
   bio.textContent = 'Bio: ' + checkIfNull(data.bio);

@@ -140,7 +140,7 @@ table {
 html,
 body,
 * {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Alata', sans-serif;
   box-sizing: border-box;
 }
 
@@ -190,6 +190,11 @@ body {
   box-shadow: 0 1px 6px -2px #000;
   background-color: #FFF;
   margin-bottom: 30px;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: 0.5s ease-in-out;
 }
 
 .card img {
