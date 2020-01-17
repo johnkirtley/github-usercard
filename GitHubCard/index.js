@@ -103,10 +103,19 @@ function newCard(data) {
   profileLink.href = data.html_url;
   followers.textContent = 'Followers: ' + data.followers;
   following.textContent = 'Following: ' + data.following;
-  bio.textContent = 'Bio: ' + data.bio;
-  githubCalendar.src = GitHubCalendar('.calendar', 'johnkirtley', {
-    responsive: true
-  });
+  bio.textContent = 'Bio: ' + checkIfNull(data.bio);
+
+  function checkIfNull(input) {
+    if (input === null) {
+      return 'No Bio Available';
+    } else {
+      return data.bio;
+    }
+  }
+
+  // githubCalendar.src = GitHubCalendar('.calendar', 'johnkirtley', {
+  //   responsive: true,
+  // });
 
   card.append(userImg);
   card.append(cardInfo);
@@ -118,7 +127,7 @@ function newCard(data) {
   cardInfo.append(followers);
   cardInfo.append(following);
   cardInfo.append(bio);
-  cardInfo.append(githubCalendar);
+  // cardInfo.append(githubCalendar);
 
 
 
