@@ -40,8 +40,6 @@ const followersArray = [];
 
 axios.get('https://api.github.com/users/johnkirtley/followers')
   .then((response) => {
-    console.log(response);
-
     response.data.map((item) => {
       axios.get(`https://api.github.com/users/${item.login}`)
         .then((response) => {
@@ -53,7 +51,8 @@ axios.get('https://api.github.com/users/johnkirtley/followers')
     })
   })
 
-// console.log(followersArray);
+
+
 
 
 /* Step 3: Create a function that accepts a single object as its only argument,
@@ -87,11 +86,13 @@ function newCard(data) {
     profileLink = document.createElement('a'),
     followers = document.createElement('p'),
     following = document.createElement('p'),
-    bio = document.createElement('p');
+    bio = document.createElement('p'),
+    githubCalendar = document.createElement('div');
 
   card.classList.add('card');
   name.classList.add('name');
   userName.classList.add('username');
+  githubCalendar.classList.add('calendar');
 
   userImg.src = data.avatar_url;
   location.textContent = data.location;
@@ -99,9 +100,13 @@ function newCard(data) {
   name.textContent = data.name;
   userName.textContent = data.login;
   profileLink.textContent = data.html_url;
+  profileLink.href = data.html_url;
   followers.textContent = 'Followers: ' + data.followers;
   following.textContent = 'Following: ' + data.following;
-  bio.textContent = data.bio;
+  bio.textContent = 'Bio: ' + data.bio;
+  githubCalendar.src = GitHubCalendar('.calendar', 'johnkirtley', {
+    responsive: true
+  });
 
   card.append(userImg);
   card.append(cardInfo);
@@ -113,18 +118,12 @@ function newCard(data) {
   cardInfo.append(followers);
   cardInfo.append(following);
   cardInfo.append(bio);
+  cardInfo.append(githubCalendar);
+
 
 
   return card;
 
 }
 
-/* List of LS Instructors Github username's: 
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
-
-// console.log(new Date(1579213452 * 1000));
+// console.log(new Date(1579218148 * 1000));
